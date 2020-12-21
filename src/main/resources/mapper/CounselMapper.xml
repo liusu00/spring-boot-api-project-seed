@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.CounselMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.Counsel">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="patient_id" jdbcType="VARCHAR" property="patientId" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="registration_id" jdbcType="VARCHAR" property="registrationId" />
+    <result column="transaction_intention" jdbcType="VARCHAR" property="transactionIntention" />
+    <result column="explain_detail" jdbcType="VARCHAR" property="explainDetail" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    <result column="ignore_flag" jdbcType="CHAR" property="ignoreFlag" />
+    <result column="counsel_type" jdbcType="VARCHAR" property="counselType" />
+    <result column="counsel_mode" jdbcType="VARCHAR" property="counselMode" />
+    <result column="context" jdbcType="LONGVARCHAR" property="context" />
+  </resultMap>
+</mapper>

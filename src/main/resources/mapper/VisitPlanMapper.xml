@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.VisitPlanMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.VisitPlan">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="interval_day" jdbcType="VARCHAR" property="intervalDay" />
+    <result column="visit_id" jdbcType="VARCHAR" property="visitId" />
+    <result column="doctor_id" jdbcType="VARCHAR" property="doctorId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="plan_visit_time" jdbcType="TIMESTAMP" property="planVisitTime" />
+    <result column="visit_staff" jdbcType="VARCHAR" property="visitStaff" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="content_id" jdbcType="VARCHAR" property="contentId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    <result column="visit_time" jdbcType="TIMESTAMP" property="visitTime" />
+    <result column="result_id" jdbcType="VARCHAR" property="resultId" />
+    <result column="result_info" jdbcType="VARCHAR" property="resultInfo" />
+    <result column="satisfaction" jdbcType="CHAR" property="satisfaction" />
+    <result column="status" jdbcType="CHAR" property="status" />
+    <result column="reurn_info" jdbcType="VARCHAR" property="reurnInfo" />
+    <result column="communication_method" jdbcType="CHAR" property="communicationMethod" />
+    <result column="visit_by" jdbcType="VARCHAR" property="visitBy" />
+    <result column="doctor_type" jdbcType="VARCHAR" property="doctorType" />
+    <result column="visit_staff_type" jdbcType="VARCHAR" property="visitStaffType" />
+    <result column="flag" jdbcType="CHAR" property="flag" />
+    <result column="diagnose_time" jdbcType="TIMESTAMP" property="diagnoseTime" />
+    <result column="show_order" jdbcType="INTEGER" property="showOrder" />
+    <result column="delay_count" jdbcType="INTEGER" property="delayCount" />
+    <result column="delay_unit" jdbcType="CHAR" property="delayUnit" />
+  </resultMap>
+</mapper>

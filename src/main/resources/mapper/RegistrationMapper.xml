@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.RegistrationMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.Registration">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="patient_id" jdbcType="VARCHAR" property="patientId" />
+    <result column="anamnesis_no" jdbcType="VARCHAR" property="anamnesisNo" />
+    <result column="serial_number" jdbcType="VARCHAR" property="serialNumber" />
+    <result column="clinic_id" jdbcType="VARCHAR" property="clinicId" />
+    <result column="card_id" jdbcType="VARCHAR" property="cardId" />
+    <result column="insure_code" jdbcType="VARCHAR" property="insureCode" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="department_id" jdbcType="VARCHAR" property="departmentId" />
+    <result column="doctor_id" jdbcType="VARCHAR" property="doctorId" />
+    <result column="cash" jdbcType="DECIMAL" property="cash" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="event_time" jdbcType="TIMESTAMP" property="eventTime" />
+    <result column="appointment_time" jdbcType="TIMESTAMP" property="appointmentTime" />
+    <result column="work_id" jdbcType="VARCHAR" property="workId" />
+    <result column="last_diagnose_time" jdbcType="TIMESTAMP" property="lastDiagnoseTime" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="symptomatic_type" jdbcType="VARCHAR" property="symptomaticType" />
+    <result column="subscribe_type" jdbcType="VARCHAR" property="subscribeType" />
+    <result column="counselor" jdbcType="VARCHAR" property="counselor" />
+    <result column="assistant" jdbcType="VARCHAR" property="assistant" />
+    <result column="treatment_status" jdbcType="CHAR" property="treatmentStatus" />
+    <result column="appointment_status" jdbcType="CHAR" property="appointmentStatus" />
+    <result column="appointment_period_begin" jdbcType="TIMESTAMP" property="appointmentPeriodBegin" />
+    <result column="appointment_period_end" jdbcType="TIMESTAMP" property="appointmentPeriodEnd" />
+    <result column="sustain_time" jdbcType="VARCHAR" property="sustainTime" />
+    <result column="resource" jdbcType="CHAR" property="resource" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="del_time" jdbcType="TIMESTAMP" property="delTime" />
+    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    <result column="undetermined_date" jdbcType="TIMESTAMP" property="undeterminedDate" />
+    <result column="type_status" jdbcType="CHAR" property="typeStatus" />
+    <result column="consulting_room_id" jdbcType="VARCHAR" property="consultingRoomId" />
+    <result column="network_electrical_counselor_id" jdbcType="VARCHAR" property="networkElectricalCounselorId" />
+    <result column="remind_number" jdbcType="INTEGER" property="remindNumber" />
+    <result column="is_reception" jdbcType="BIT" property="isReception" />
+    <result column="is_check" jdbcType="BIT" property="isCheck" />
+    <result column="is_transfer_treatment" jdbcType="BIT" property="isTransferTreatment" />
+    <result column="is_end_therapy" jdbcType="BIT" property="isEndTherapy" />
+    <result column="is_triage" jdbcType="BIT" property="isTriage" />
+    <result column="counselor_reception" jdbcType="BIT" property="counselorReception" />
+    <result column="telephone_confirmation_status" jdbcType="CHAR" property="telephoneConfirmationStatus" />
+    <result column="class_id" jdbcType="VARCHAR" property="classId" />
+    <result column="telephone_confirmation_user" jdbcType="VARCHAR" property="telephoneConfirmationUser" />
+    <result column="telephone_confirmation_time" jdbcType="TIMESTAMP" property="telephoneConfirmationTime" />
+  </resultMap>
+</mapper>

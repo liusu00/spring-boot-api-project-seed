@@ -13,5 +13,7 @@ public interface Mapper<T>
         BaseMapper<T>,
         ConditionMapper<T>,
         IdsMapper<T>,
-        InsertListMapper<T> {
+        InsertUidListMapper<T>,
+        UpdateListMapper<T>
+{
 }

@@ -31,6 +31,9 @@ public abstract class AbstractService<T> implements Service<T> {
     public void save(List<T> models) {
         mapper.insertList(models);
     }
+    public void saveUid(List<T> models) {
+        mapper.insertList(models);
+    }
 
     public void deleteById(Integer id) {
         mapper.deleteByPrimaryKey(id);
@@ -55,6 +58,11 @@ public abstract class AbstractService<T> implements Service<T> {
             Field field = modelClass.getDeclaredField(fieldName);
             field.setAccessible(true);
             field.set(model, value);
+            Field accountTypeField = modelClass.getDeclaredField("accountType");
+            if(accountTypeField != null){
+                accountTypeField.setAccessible(true);
+                accountTypeField.set(model, "1");
+            }
             return mapper.selectOne(model);
         } catch (ReflectiveOperationException e) {
             throw new ServiceException(e.getMessage(), e);

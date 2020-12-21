@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.PatientMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.Patient">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="patient_type" jdbcType="VARCHAR" property="patientType" />
+    <result column="clinic_id" jdbcType="VARCHAR" property="clinicId" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="age" jdbcType="VARCHAR" property="age" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="country" jdbcType="VARCHAR" property="country" />
+    <result column="card_no" jdbcType="VARCHAR" property="cardNo" />
+    <result column="certificate_authority" jdbcType="VARCHAR" property="certificateAuthority" />
+    <result column="period_day" jdbcType="VARCHAR" property="periodDay" />
+    <result column="photo" jdbcType="VARCHAR" property="photo" />
+    <result column="native_place" jdbcType="VARCHAR" property="nativePlace" />
+    <result column="nation_name" jdbcType="VARCHAR" property="nationName" />
+    <result column="marriage_status" jdbcType="CHAR" property="marriageStatus" />
+    <result column="occupation" jdbcType="VARCHAR" property="occupation" />
+    <result column="religion" jdbcType="VARCHAR" property="religion" />
+    <result column="other_card" jdbcType="VARCHAR" property="otherCard" />
+    <result column="medical_card" jdbcType="VARCHAR" property="medicalCard" />
+    <result column="education_level" jdbcType="VARCHAR" property="educationLevel" />
+    <result column="telephone_type" jdbcType="VARCHAR" property="telephoneType" />
+    <result column="telephone_no" jdbcType="VARCHAR" property="telephoneNo" />
+    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
+    <result column="tel_no" jdbcType="VARCHAR" property="telNo" />
+    <result column="wechat_no" jdbcType="VARCHAR" property="wechatNo" />
+    <result column="qq_no" jdbcType="VARCHAR" property="qqNo" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="area_id" jdbcType="VARCHAR" property="areaId" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="detail_address" jdbcType="VARCHAR" property="detailAddress" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="mini_open_id" jdbcType="VARCHAR" property="miniOpenId" />
+    <result column="union_id" jdbcType="VARCHAR" property="unionId" />
+    <result column="apple_open_id" jdbcType="VARCHAR" property="appleOpenId" />
+    <result column="invite_user_id" jdbcType="VARCHAR" property="inviteUserId" />
+    <result column="device_id" jdbcType="VARCHAR" property="deviceId" />
+    <result column="push_registration_id" jdbcType="VARCHAR" property="pushRegistrationId" />
+    <result column="push_alias" jdbcType="VARCHAR" property="pushAlias" />
+    <result column="push_tag" jdbcType="VARCHAR" property="pushTag" />
+    <result column="school_id" jdbcType="VARCHAR" property="schoolId" />
+    <result column="class_id" jdbcType="VARCHAR" property="classId" />
+    <result column="one_level_source" jdbcType="VARCHAR" property="oneLevelSource" />
+    <result column="two_level_source" jdbcType="VARCHAR" property="twoLevelSource" />
+    <result column="three_level_source" jdbcType="VARCHAR" property="threeLevelSource" />
+    <result column="tag" jdbcType="VARCHAR" property="tag" />
+    <result column="first_doctor_id" jdbcType="VARCHAR" property="firstDoctorId" />
+    <result column="remarks2" jdbcType="VARCHAR" property="remarks2" />
+    <result column="referrals" jdbcType="BIGINT" property="referrals" />
+    <result column="begin_date" jdbcType="TIMESTAMP" property="beginDate" />
+    <result column="main_suit" jdbcType="VARCHAR" property="mainSuit" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="symptom" jdbcType="VARCHAR" property="symptom" />
+    <result column="first_symptomatic" jdbcType="VARCHAR" property="firstSymptomatic" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+  </resultMap>
+</mapper>

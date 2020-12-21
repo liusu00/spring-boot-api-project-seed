@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.SubscribeTypeConfigMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.SubscribeTypeConfig">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="parent_id" jdbcType="VARCHAR" property="parentId" />
+    <result column="parent_ids" jdbcType="VARCHAR" property="parentIds" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="color" jdbcType="VARCHAR" property="color" />
+    <result column="level" jdbcType="CHAR" property="level" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="if_enable" jdbcType="CHAR" property="ifEnable" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    <result column="property" jdbcType="VARCHAR" property="property" />
+  </resultMap>
+</mapper>
