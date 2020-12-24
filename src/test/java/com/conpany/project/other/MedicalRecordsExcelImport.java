@@ -57,7 +57,6 @@ public class MedicalRecordsExcelImport extends Tester {
          String filepath = "C:\\Users\\liusu\\Desktop\\提交资料\\20201126\\病历1126";
 
         try {
-
             File file = new File(filepath);
             String[] filelist = file.list();
             for (int i = 0; i < filelist.length; i++) {
@@ -74,23 +73,23 @@ public class MedicalRecordsExcelImport extends Tester {
 
     public void imports(String filePath) {
         String clinicId = "";
-        if(filePath.contains("八方店")){
+        if(filePath.contains("八方")){
             clinicId = "0cdc709140b545958002ce2fe64de3f1";
-        }else if(filePath.contains("保利店")){
+        }else if(filePath.contains("保利")){
             clinicId = "43b2685eddd448bd8f5a42b62f6a0b80";
-        }else if(filePath.contains("春天百货店")){
+        }else if(filePath.contains("春天百货")){
             clinicId = "d7456aa21f354181a389dd321531d4ed";
-        }else if(filePath.contains("邵阳旗舰店")){
+        }else if(filePath.contains("邵阳")){
             clinicId = "f1a28d87bca04554b47bc83bc2b31034";
-        }else if(filePath.contains("万家丽店")){
+        }else if(filePath.contains("万家丽")){
             clinicId = "4e2c7c1ce25f4ac58d2e24c866d28156";
-        }else if(filePath.contains("吾悦广场店")){
+        }else if(filePath.contains("吾悦")){
             clinicId = "d108e55dfdaa4358ad1789808ee5a5ef";
-        }else if(filePath.contains("喜盈门店")){
+        }else if(filePath.contains("喜盈门")){
             clinicId = "7ac3986edb7847728c1443773e138051";
-        }else if(filePath.contains("新世界旗舰店")){
+        }else if(filePath.contains("新世界")){
             clinicId = "299ee6061eba44acb802da1b3141ad01";
-        }else if(filePath.contains("新天地店")){
+        }else if(filePath.contains("新天地")){
             clinicId = "a35b4438b7414212933035f8f8a8a190";
         }
 
@@ -192,7 +191,13 @@ public class MedicalRecordsExcelImport extends Tester {
                                     JSONObject json = new JSONObject();
                                     boolean matches = s1.substring(0, 1).matches("^[0-9]*$");
                                     if(matches){
-                                        json.put("position",Integer.valueOf(s1.substring(0,1))-1);
+                                        if(Integer.valueOf(s1.substring(0,1))<=2){
+                                            json.put("position",Integer.valueOf(s1.substring(0,1))-1);
+                                        }else if(Integer.valueOf(s1.substring(0,1))==3){
+                                            json.put("position",3);
+                                        }else if(Integer.valueOf(s1.substring(0,1))==4){
+                                            json.put("position",2);
+                                        }
                                         json.put("serialNumber",s1.substring(1));
                                         array.add(json);
                                     }
