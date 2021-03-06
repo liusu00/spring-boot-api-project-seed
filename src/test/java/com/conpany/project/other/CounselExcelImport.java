@@ -50,25 +50,8 @@ public class CounselExcelImport extends Tester {
     @Rollback(false)
     public void importAll(){
         String[] str = {
-                "八方-咨询记录-2019.xls",
-                "八方-咨询记录-2020.xls",
-                "保利-咨询记录-2018.xls",
-                "保利-咨询记录-2019.xls",
-                "保利-咨询记录-2020.xls",
-                "春天百货-咨询记录-2020.xls",
-                "邵阳-咨询记录-2018.xls",
-                "邵阳-咨询记录-2019.xls",
-                "邵阳-咨询记录-2020.xls",
-                "万家丽-咨询记录-2019.xls",
-                "万家丽-咨询记录-2020.xls",
-                "吾悦-咨询记录-2020.xls",
-                "喜盈门-咨询记录-2019.xls",
-                "喜盈门-咨询记录-2020.xls",
-                "新世界-咨询记录-2019.xls",
-                "新世界-咨询记录-2020.xls",
-                "新天地-咨询记录-2018.xls",
-                "新天地-咨询记录-2019.xls",
-                "新天地-咨询记录-2020.xls",
+                "咨询记录.xls",
+
 
         };
         for (String name : str) {
@@ -88,7 +71,7 @@ public class CounselExcelImport extends Tester {
         Map<String, String> itemsMap = items.stream().collect(Collectors.toMap(CounselItems::getItemName, CounselItems::getId));
 
         //String filePath = "C:\\Users\\liusu\\Desktop\\提交资料\\咨询\\新天地-咨询记录-2020.xls";
-        String filePath = "C:\\Users\\liusu\\Desktop\\提交资料\\咨询\\"+name;
+        String filePath = "F:\\新世界咨询\\"+name;
         InputStream fis = null;
         try {
             fis = new FileInputStream(filePath);
@@ -149,6 +132,9 @@ public class CounselExcelImport extends Tester {
                     //成交意愿 transaction_intention
                     cellValue = POIUtil.getCellValue(row.getCell(13));
                     info.setTransactionIntention(dictMap.get(cellValue));
+                    //备注
+                    cellValue = POIUtil.getCellValue(row.getCell(17));
+                    info.setRemarks(cellValue);
                     list.add(info);
 
                 }

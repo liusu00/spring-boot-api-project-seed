@@ -6,6 +6,7 @@ import java.util.*;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.company.project.model.MedicalRecord;
 import com.company.project.model.MedicalRecordMonthExamine;
 import com.company.project.model.PatientSource;
 import com.company.project.service.PatientSourceService;
@@ -18,16 +19,18 @@ public class TestDemo {
 
 
     public static void main(String[] args) {
-        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        Date parse = null;
-        try {
-            parse = sdf2.parse("2020/12/08 16:39:10");
-            System.out.println(parse.after(sdf2.parse("2020/12/07 00:00:00")));
-
-        } catch (ParseException e) {
-            e.printStackTrace();
+        List<String> list = new ArrayList<>();
+        list.add("A");
+        list.add("B");
+        list.add("C");
+        Iterator<String> iterator = list.iterator();
+        if(iterator.hasNext()){
+            String next = iterator.next();
+            if(next=="A"){
+                iterator.remove();
+            }
         }
-
+        System.out.println(list);
     }
 
     private static void setSerialNumber(JSONObject json, String s1 ){

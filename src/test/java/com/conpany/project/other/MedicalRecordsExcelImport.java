@@ -535,7 +535,7 @@ public class MedicalRecordsExcelImport extends Tester {
                 }
             });
             Iterator<MedicalRecord> iterator = list.iterator();
-            if(iterator.hasNext()){
+            while(iterator.hasNext()){
                 MedicalRecord next = iterator.next();
                 if(next.getAppointmentId()==null){
                     iterator.remove();
