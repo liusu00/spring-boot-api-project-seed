@@ -18,9 +18,9 @@ import static com.company.project.core.ProjectConstant.*;
  */
 public class CodeGenerator {
     //JDBC配置，请修改为你项目的实际配置
-    private static final String JDBC_URL = "jdbc:mysql://218.244.148.209:3309/db_medical";
-    private static final String JDBC_USERNAME = "medical_admin";
-    private static final String JDBC_PASSWORD = "MAdmin@1123#";
+    private static final String JDBC_URL = "jdbc:mysql://121.199.39.155:3309/db_medical";
+    private static final String JDBC_USERNAME = "medical";
+    private static final String JDBC_PASSWORD = "Ds@Medical0720!";
     private static final String JDBC_DIVER_CLASS_NAME = "com.mysql.jdbc.Driver";
 
     private static final String PROJECT_PATH = System.getProperty("user.dir");//项目在硬盘上的基础路径
@@ -37,8 +37,8 @@ public class CodeGenerator {
     private static final String DATE = new SimpleDateFormat("yyyy/MM/dd").format(new Date());//@date
 
     public static void main(String[] args) {
-        //genCode("account_balance_book");
-        genCodeByCustomModelName("clc_patient_source","PatientSource");
+        genCode("medical_record_yw");
+        //genCodeByCustomModelName("medical_record_error","SmsTemplate");
     }
 
     /**

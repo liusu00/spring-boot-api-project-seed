@@ -14,7 +14,6 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import tk.mybatis.mapper.entity.Condition;
@@ -24,17 +23,12 @@ import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-public class MedicalRecordsExcelImport extends Tester {
+public class MedicalRecordsExcelImport2 extends Tester {
 
     @Autowired
     private MedicalRecordService medicalRecordService;
-    @Autowired
-    private MedicalRecordErrorService medicalRecordErrorService;
-    @Autowired
-    private MedicalRecordYwService medicalRecordYwService;
     @Autowired
     private PatientService patientService;
     @Autowired
@@ -55,11 +49,12 @@ public class MedicalRecordsExcelImport extends Tester {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd HH:mm");
     SimpleDateFormat sdf3 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    SimpleDateFormat sdf4 = new SimpleDateFormat("yyyy年MM月dd日");
 
     @Test
     @Rollback(false)
     public void importAll() {
-        String filepath = "F:\\新世界";
+        String filepath = "F:\\病历遗失";
         try {
             File file = new File(filepath);
             String[] filelist = file.list();
@@ -106,7 +101,7 @@ public class MedicalRecordsExcelImport extends Tester {
         try {
             fis = new FileInputStream(filePath);
             Workbook workbook = null;
-            if (filePath.endsWith(".Xlsx")) {
+            if (filePath.endsWith(".xlsx")) {
                 workbook = new XSSFWorkbook(fis);
             } else if (filePath.endsWith(".xls") || filePath.endsWith(".et")) {
                 workbook = new HSSFWorkbook(fis);
@@ -120,8 +115,6 @@ public class MedicalRecordsExcelImport extends Tester {
             Row row;
             Cell cell;
             int i = 0;
-            ArrayList<MedicalRecordError> errorlist = new ArrayList();
-            ArrayList<MedicalRecordYw> ywList = new ArrayList();
             ArrayList<MedicalRecord> list = new ArrayList();
             ArrayList treatmentPlanList = new ArrayList();
             ArrayList handleList = new ArrayList();
@@ -134,11 +127,8 @@ public class MedicalRecordsExcelImport extends Tester {
                 row = rows.next();
                 // 获取单元格
                 if(i>0){
-                    String creatTiemStr = POIUtil.getCellValue(row.getCell(4));
-                    Date parse = sdf2.parse(creatTiemStr);
-                    if(parse.after(sdf2.parse("2020/12/07 00:00:00"))){
-                        continue;
-                    }
+
+
 
                     MedicalRecord info = new MedicalRecord();
                     info.setId(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -152,10 +142,10 @@ public class MedicalRecordsExcelImport extends Tester {
                      * 口腔检查	辅助检查	诊断	治疗计划	处置	医嘱	标签	备注
                      */
 
-                    String cellValue = POIUtil.getCellValue(row.getCell(0));
+                    String cellValue = POIUtil.getCellValue(row.getCell(1));
                     info.setName(cellValue);
 
-                    cellValue = POIUtil.getCellValue(row.getCell(1)).trim();
+                    cellValue = POIUtil.getCellValue(row.getCell(0));
                     cardNumList.add(cellValue);
                     info.setNo(cellValue);
                     //预约医生
@@ -181,13 +171,9 @@ public class MedicalRecordsExcelImport extends Tester {
                     //MedicalRecordMonthExamine
                     //MedicalRecordSupportExamine
                     //MedicalRecordTreatmentPlan
-                    MedicalRecordYw yw = new MedicalRecordYw();
-                    yw.setId(info.getId());
                     cellValue = POIUtil.getCellValue(row.getCell(8));
-                    yw.setKqjc(cellValue);
-
-                    if(!cellValue.equals("") && cellValue.length()>3){
-                        String[] split = cellValue.substring(3).split(",牙位：");
+                    if(!cellValue.equals("")){
+                        String[] split = cellValue.split("。,");
                         for (String s : split) {
                             MedicalRecordMonthExamine examine = new MedicalRecordMonthExamine();
                             examine.setId(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -197,7 +183,7 @@ public class MedicalRecordsExcelImport extends Tester {
                             examine.setMedicalRecordId(info.getId());
 
                             String[] split1 = s.split(";内容：");
-                            String replace = split1[0];
+                            String replace = split1[0].replace("牙位：", "");
                             if(!"".equals(replace)){
                                 String[] split2 = replace.split(",");
                                 JSONArray array = new JSONArray();
@@ -207,33 +193,19 @@ public class MedicalRecordsExcelImport extends Tester {
                                     if(matches){
                                         if(Integer.valueOf(s1.substring(0,1))<=2){
                                             json.put("position",Integer.valueOf(s1.substring(0,1))-1);
-                                            json.put("serialNumber",s1.substring(1));
                                         }else if(Integer.valueOf(s1.substring(0,1))==3){
                                             json.put("position",3);
-                                            json.put("serialNumber",s1.substring(1));
                                         }else if(Integer.valueOf(s1.substring(0,1))==4){
                                             json.put("position",2);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==5){
-                                            json.put("position",0);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==6){
-                                            json.put("position",1);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==7){
-                                            json.put("position",3);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==8){
-                                            json.put("position",2);
-                                            setSerialNumber(json, s1);
                                         }
+                                        json.put("serialNumber",s1.substring(1));
                                         array.add(json);
                                     }
                                 }
                                 examine.setToothPositions(array.toJSONString());
                             }
 
-                            if(split1.length>1) examine.setResult(split1[1].length()>500?split1[1].substring(0, 500):split1[1]);
+                            if(split1.length>1) examine.setResult(split1[1].length()>200?split1[1].substring(0, 200):split1[1]);
                             monthExamineList.add(examine);
                         }
                     }
@@ -241,9 +213,8 @@ public class MedicalRecordsExcelImport extends Tester {
 
                     //辅助检查
                     cellValue = POIUtil.getCellValue(row.getCell(9));
-                    yw.setFzjc(cellValue);
-                    if(!cellValue.equals("") && cellValue.length()>3){
-                        String[] split = cellValue.substring(3).split(",牙位：");
+                    if(!cellValue.equals("")){
+                        String[] split = cellValue.split("。,");
                         for (String s : split) {
                             MedicalRecordSupportExamine examine = new MedicalRecordSupportExamine();
                             examine.setId(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -253,7 +224,7 @@ public class MedicalRecordsExcelImport extends Tester {
                             examine.setMedicalRecordId(info.getId());
 
                             String[] split1 = s.split(";内容：");
-                            String replace = split1[0];
+                            String replace = split1[0].replace("牙位：", "");
                             if(!"".equals(replace)){
                                 String[] split2 = replace.split(",");
                                 JSONArray array = new JSONArray();
@@ -263,33 +234,19 @@ public class MedicalRecordsExcelImport extends Tester {
                                     if(matches){
                                         if(Integer.valueOf(s1.substring(0,1))<=2){
                                             json.put("position",Integer.valueOf(s1.substring(0,1))-1);
-                                            json.put("serialNumber",s1.substring(1));
                                         }else if(Integer.valueOf(s1.substring(0,1))==3){
                                             json.put("position",3);
-                                            json.put("serialNumber",s1.substring(1));
                                         }else if(Integer.valueOf(s1.substring(0,1))==4){
                                             json.put("position",2);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==5){
-                                            json.put("position",0);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==6){
-                                            json.put("position",1);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==7){
-                                            json.put("position",3);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==8){
-                                            json.put("position",2);
-                                            setSerialNumber(json, s1);
                                         }
+                                        json.put("serialNumber",s1.substring(1));
                                         array.add(json);
                                     }
 
                                 }
                                 examine.setToothPositions(array.toJSONString());
                             }
-                            if(split1.length>1) examine.setResult(split1[1].length()>500?split1[1].substring(0, 500):split1[1]);
+                            if(split1.length>1) examine.setResult(split1[1].length()>200?split1[1].substring(0, 200):split1[1]);
                             supportExamineList.add(examine);
                         }
                     }
@@ -297,9 +254,8 @@ public class MedicalRecordsExcelImport extends Tester {
 
                     //	诊断
                     cellValue = POIUtil.getCellValue(row.getCell(10));
-                    yw.setZd(cellValue);
-                    if(!cellValue.equals("") && cellValue.length()>3){
-                        String[] split = cellValue.substring(3).split(",牙位：");
+                    if(!cellValue.equals("")){
+                        String[] split = cellValue.split("。,");
                         for (String s : split) {
                             MedicalRecordDiagnosis examine = new MedicalRecordDiagnosis();
                             examine.setId(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -309,7 +265,7 @@ public class MedicalRecordsExcelImport extends Tester {
                             examine.setMedicalRecordId(info.getId());
 
                             String[] split1 = s.split(";内容：");
-                            String replace = split1[0];
+                            String replace = split1[0].replace("牙位：", "");
                             if(!"".equals(replace)){
                                 String[] split2 = replace.split(",");
                                 JSONArray array = new JSONArray();
@@ -319,33 +275,19 @@ public class MedicalRecordsExcelImport extends Tester {
                                     if(matches){
                                         if(Integer.valueOf(s1.substring(0,1))<=2){
                                             json.put("position",Integer.valueOf(s1.substring(0,1))-1);
-                                            json.put("serialNumber",s1.substring(1));
                                         }else if(Integer.valueOf(s1.substring(0,1))==3){
                                             json.put("position",3);
-                                            json.put("serialNumber",s1.substring(1));
                                         }else if(Integer.valueOf(s1.substring(0,1))==4){
                                             json.put("position",2);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==5){
-                                            json.put("position",0);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==6){
-                                            json.put("position",1);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==7){
-                                            json.put("position",3);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==8){
-                                            json.put("position",2);
-                                            setSerialNumber(json, s1);
                                         }
+                                        json.put("serialNumber",s1.substring(1));
                                         array.add(json);
                                     }
 
                                 }
                                 examine.setToothPositions(array.toJSONString());
                             }
-                            if(split1.length>1) examine.setResult(split1[1].length()>500?split1[1].substring(0, 500):split1[1]);
+                            if(split1.length>1) examine.setResult(split1[1].length()>200?split1[1].substring(0, 200):split1[1]);
                             medicalRecordDiagnosisList.add(examine);
                         }
                     }
@@ -353,9 +295,8 @@ public class MedicalRecordsExcelImport extends Tester {
 
                     //治疗计划
                     cellValue = POIUtil.getCellValue(row.getCell(11));
-                    yw.setZljh(cellValue);
-                    if(!cellValue.equals("") && cellValue.length()>3){
-                        String[] split = cellValue.substring(3).split(",牙位：");
+                    if(!cellValue.equals("")){
+                        String[] split = cellValue.split("。,");
                         for (String s : split) {
                             MedicalRecordTreatmentPlan examine = new MedicalRecordTreatmentPlan();
                             examine.setId(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -365,7 +306,7 @@ public class MedicalRecordsExcelImport extends Tester {
                             examine.setMedicalRecordId(info.getId());
 
                             String[] split1 = s.split(";内容：");
-                            String replace = split1[0];
+                            String replace = split1[0].replace("牙位：", "");
                             if(!"".equals(replace)){
                                 String[] split2 = replace.split(",");
                                 JSONArray array = new JSONArray();
@@ -375,33 +316,19 @@ public class MedicalRecordsExcelImport extends Tester {
                                     if(matches){
                                         if(Integer.valueOf(s1.substring(0,1))<=2){
                                             json.put("position",Integer.valueOf(s1.substring(0,1))-1);
-                                            json.put("serialNumber",s1.substring(1));
                                         }else if(Integer.valueOf(s1.substring(0,1))==3){
                                             json.put("position",3);
-                                            json.put("serialNumber",s1.substring(1));
                                         }else if(Integer.valueOf(s1.substring(0,1))==4){
                                             json.put("position",2);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==5){
-                                            json.put("position",0);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==6){
-                                            json.put("position",1);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==7){
-                                            json.put("position",3);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==8){
-                                            json.put("position",2);
-                                            setSerialNumber(json, s1);
                                         }
+                                        json.put("serialNumber",s1.substring(1));
                                         array.add(json);
                                     }
 
                                 }
                                 examine.setToothPositions(array.toJSONString());
                             }
-                            if(split1.length>1) examine.setResult(split1[1].length()>500?split1[1].substring(0, 500):split1[1]);
+                            if(split1.length>1) examine.setResult(split1[1].length()>200?split1[1].substring(0, 200):split1[1]);
                             treatmentPlanList.add(examine);
                         }
                     }
@@ -409,10 +336,8 @@ public class MedicalRecordsExcelImport extends Tester {
 
                     //处置
                     cellValue = POIUtil.getCellValue(row.getCell(12));
-                    yw.setCz(cellValue);
-                    ywList.add(yw);
-                    if(!cellValue.equals("") && cellValue.length()>3){
-                        String[] split = cellValue.substring(3).split(",牙位：");
+                    if(!cellValue.equals("")){
+                        String[] split = cellValue.split("。,");
                         for (String s : split) {
                             MedicalRecordHandle examine = new MedicalRecordHandle();
                             examine.setId(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -422,7 +347,7 @@ public class MedicalRecordsExcelImport extends Tester {
                             examine.setMedicalRecordId(info.getId());
 
                             String[] split1 = s.split(";内容：");
-                            String replace = split1[0];
+                            String replace = split1[0].replace("牙位：", "");
                             if(!"".equals(replace)){
                                 String[] split2 = replace.split(",");
                                 JSONArray array = new JSONArray();
@@ -432,36 +357,24 @@ public class MedicalRecordsExcelImport extends Tester {
                                     if(matches){
                                         if(Integer.valueOf(s1.substring(0,1))<=2){
                                             json.put("position",Integer.valueOf(s1.substring(0,1))-1);
-                                            json.put("serialNumber",s1.substring(1));
                                         }else if(Integer.valueOf(s1.substring(0,1))==3){
                                             json.put("position",3);
-                                            json.put("serialNumber",s1.substring(1));
                                         }else if(Integer.valueOf(s1.substring(0,1))==4){
                                             json.put("position",2);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==5){
-                                            json.put("position",0);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==6){
-                                            json.put("position",1);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==7){
-                                            json.put("position",3);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==8){
-                                            json.put("position",2);
-                                            setSerialNumber(json, s1);
                                         }
+                                        json.put("serialNumber",s1.substring(1));
                                         array.add(json);
                                     }
 
                                 }
                                 examine.setToothPositions(array.toJSONString());
                             }
-                            if(split1.length>1) examine.setResult(split1[1].length()>500?split1[1].substring(0, 500):split1[1]);
+                            if(split1.length>1) examine.setResult(split1[1].length()>200?split1[1].substring(0, 200):split1[1]);
                             handleList.add(examine);
                         }
                     }
+
+
 
                     //医嘱
                     cellValue = POIUtil.getCellValue(row.getCell(13));
@@ -484,17 +397,7 @@ public class MedicalRecordsExcelImport extends Tester {
             criteria.andIn("cardNumber", cardNumList);
             List<Patient> patients = patientService.findByCondition(condition);
             System.out.println("读取患者");
-            Map<String, String> patientMap = patients.stream().collect(Collectors.toMap(Patient::getCardNumber, Patient::getId,(v1,v2)->v1));
-            list.forEach(d ->{
-                String patientId = patientMap.get(d.getNo());
-                if(patientId != null){
-                    d.setPatientId(patientId);
-                }else{
-                    MedicalRecordError error = new MedicalRecordError();
-                    BeanUtils.copyProperties(d, error);
-                    errorlist.add(error);
-                }
-            });
+            Map<String, String> patientMap = patients.stream().collect(Collectors.toMap(Patient::getName, Patient::getId,(v1,v2)->v1));
 
             List<Registration> regs = new ArrayList<>();
             List<List<String>> cardNumListPartition = Lists.partition(new ArrayList<>(cardNumList), 5000);
@@ -506,41 +409,18 @@ public class MedicalRecordsExcelImport extends Tester {
             });
 
             System.out.println("读取预约");
-
-
-            Map<String, List<Registration>> registratioMap = regs.stream()
-                    .collect(Collectors.groupingBy(Registration::getAnamnesisNo, toSortedList(
-                            Comparator.comparing(Registration::getAppointmentTime)
-                                    .reversed())));
-            //Map<String, String> registratioMap = regs.stream().collect(Collectors.groupingBy(v -> v.getAnamnesisNo() + sdf.format(v.getAppointmentTime()) , Registration::getId,(v1,v2)->v1));
-           // Map<String, String> registratioMap2 = regs.stream().collect(Collectors.toMap(v -> v.getAnamnesisNo() , Registration::getId,(v1,v2)->v1));
+            Map<String, String> registratioMap = regs.stream().collect(Collectors.toMap(v -> v.getAnamnesisNo() + sdf.format(v.getAppointmentTime()) , Registration::getId,(v1,v2)->v1));
+            Map<String, String> registratioMap2 = regs.stream().collect(Collectors.toMap(v -> v.getAnamnesisNo() , Registration::getId,(v1,v2)->v1));
 
             list.forEach(d ->{
-                //String id = registratioMap.get(d.getNo() + sdf.format(d.getCreateDate()));
-                List<Registration> registrations = registratioMap.get(d.getNo());
-                if(registrations != null && registrations.size() > 0){
-                    Iterator<Registration> iterator = registrations.iterator();
-                    while(iterator.hasNext() && d.getAppointmentId()==null){
-                        Registration next = iterator.next();
-                        if(next.getAppointmentTime().before(d.getCreateDate())){
-                            d.setAppointmentId(next.getId());
-                        }
-                    }
-
-                }
-                if(d.getAppointmentId()==null && d.getPatientId() != null){
-                    MedicalRecordError error = new MedicalRecordError();
-                    BeanUtils.copyProperties(d, error);
-                    errorlist.add(error);
+                d.setPatientId(patientMap.get(d.getName()));
+                String id = registratioMap.get(d.getNo() + sdf.format(d.getCreateDate()));
+                if(id != null){
+                    d.setAppointmentId(id);
+                }else{
+                    d.setAppointmentId(registratioMap2.get(d.getNo()));
                 }
             });
-            Iterator<MedicalRecord> iterator = list.iterator();
-            if(iterator.hasNext()){
-                MedicalRecord next = iterator.next();
-                if(next.getAppointmentId()==null){
-                    iterator.remove();
-                }
-            }
 
             List<List<MedicalRecord>> medicalRecordList = Lists.partition(list, 5000);
             medicalRecordList.forEach(d -> {
@@ -572,16 +452,6 @@ public class MedicalRecordsExcelImport extends Tester {
                 monthExamineService.saveUid(d);
             });
 
-            List<List<MedicalRecordError>> errorlists = Lists.partition(errorlist, 5000);
-            errorlists.forEach(d -> {
-                medicalRecordErrorService.saveUid(d);
-            });
-
-            List<List<MedicalRecordYw>> ywLists = Lists.partition(ywList, 5000);
-            ywLists.forEach(d -> {
-                medicalRecordYwService.saveUid(d);
-            });
-
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -601,21 +471,5 @@ public class MedicalRecordsExcelImport extends Tester {
 
     }
 
-    private void setSerialNumber(JSONObject json, String s1 ){
-        if("1".equals(s1.substring(1))){
-            json.put("serialNumber","A");
-        }else if("2".equals(s1.substring(1))){
-            json.put("serialNumber","B");
-        }else if("3".equals(s1.substring(1))){
-            json.put("serialNumber","C");
-        }else if("4".equals(s1.substring(1))){
-            json.put("serialNumber","D");
-        }else if("5".equals(s1.substring(1))){
-            json.put("serialNumber","E");
-        }
-    }
-    //收集器
-    public <T> Collector<T, ?, List<T>> toSortedList(Comparator<? super T> c) {
-        return Collectors.collectingAndThen(Collectors.toCollection(() -> new TreeSet<>(c)), ArrayList::new);
-    }
+
 }

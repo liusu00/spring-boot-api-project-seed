@@ -106,6 +106,9 @@ public class MedicalRecord {
     @Column(name = "update_date")
     private Date updateDate;
 
+    @Column(name = "import_time")
+    private Date importTime;
+
     /**
      * 备注信息
      */
@@ -479,5 +482,13 @@ public class MedicalRecord {
      */
     public void setDelFlag(String delFlag) {
         this.delFlag = delFlag;
+    }
+
+    public Date getImportTime() {
+        return importTime;
+    }
+
+    public void setImportTime(Date importTime) {
+        this.importTime = importTime;
     }
 }
