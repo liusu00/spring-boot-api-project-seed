@@ -15,6 +15,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * 比对两个表的数据： medical_record 和 medical_record_backup
+ */
 public class blb2 extends Tester {
 
     @Autowired
