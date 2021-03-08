@@ -59,7 +59,7 @@ public class MedicalRecordsExcelImport extends Tester {
     @Test
     @Rollback(false)
     public void importAll() {
-        String filepath = "F:\\新世界";
+        String filepath = "F:\\除了";
         try {
             File file = new File(filepath);
             String[] filelist = file.list();
@@ -134,11 +134,11 @@ public class MedicalRecordsExcelImport extends Tester {
                 row = rows.next();
                 // 获取单元格
                 if(i>0){
-                    String creatTiemStr = POIUtil.getCellValue(row.getCell(4));
+                    /*String creatTiemStr = POIUtil.getCellValue(row.getCell(4));
                     Date parse = sdf2.parse(creatTiemStr);
                     if(parse.after(sdf2.parse("2020/12/07 00:00:00"))){
                         continue;
-                    }
+                    }*/
 
                     MedicalRecord info = new MedicalRecord();
                     info.setId(UUID.randomUUID().toString().replaceAll("-", ""));
@@ -197,40 +197,42 @@ public class MedicalRecordsExcelImport extends Tester {
                             examine.setMedicalRecordId(info.getId());
 
                             String[] split1 = s.split(";内容：");
-                            String replace = split1[0];
-                            if(!"".equals(replace)){
-                                String[] split2 = replace.split(",");
-                                JSONArray array = new JSONArray();
-                                for (String s1 : split2) {
-                                    JSONObject json = new JSONObject();
-                                    boolean matches = s1.substring(0, 1).matches("^[0-9]*$");
-                                    if(matches){
-                                        if(Integer.valueOf(s1.substring(0,1))<=2){
-                                            json.put("position",Integer.valueOf(s1.substring(0,1))-1);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==3){
-                                            json.put("position",3);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==4){
-                                            json.put("position",2);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==5){
-                                            json.put("position",0);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==6){
-                                            json.put("position",1);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==7){
-                                            json.put("position",3);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==8){
-                                            json.put("position",2);
-                                            setSerialNumber(json, s1);
+                            if(split1.length > 0){
+                                String replace = split1[0];
+                                if(!"".equals(replace)){
+                                    String[] split2 = replace.split(",");
+                                    JSONArray array = new JSONArray();
+                                    for (String s1 : split2) {
+                                        JSONObject json = new JSONObject();
+                                        boolean matches = s1.substring(0, 1).matches("^[0-9]*$");
+                                        if(matches){
+                                            if(Integer.valueOf(s1.substring(0,1))<=2){
+                                                json.put("position",Integer.valueOf(s1.substring(0,1))-1);
+                                                json.put("serialNumber",s1.substring(1));
+                                            }else if(Integer.valueOf(s1.substring(0,1))==3){
+                                                json.put("position",3);
+                                                json.put("serialNumber",s1.substring(1));
+                                            }else if(Integer.valueOf(s1.substring(0,1))==4){
+                                                json.put("position",2);
+                                                json.put("serialNumber",s1.substring(1));
+                                            }else if(Integer.valueOf(s1.substring(0,1))==5){
+                                                json.put("position",0);
+                                                setSerialNumber(json, s1);
+                                            }else if(Integer.valueOf(s1.substring(0,1))==6){
+                                                json.put("position",1);
+                                                setSerialNumber(json, s1);
+                                            }else if(Integer.valueOf(s1.substring(0,1))==7){
+                                                json.put("position",3);
+                                                setSerialNumber(json, s1);
+                                            }else if(Integer.valueOf(s1.substring(0,1))==8){
+                                                json.put("position",2);
+                                                setSerialNumber(json, s1);
+                                            }
+                                            array.add(json);
                                         }
-                                        array.add(json);
                                     }
+                                    examine.setToothPositions(array.toJSONString());
                                 }
-                                examine.setToothPositions(array.toJSONString());
                             }
 
                             if(split1.length>1) examine.setResult(split1[1].length()>500?split1[1].substring(0, 500):split1[1]);
@@ -253,42 +255,45 @@ public class MedicalRecordsExcelImport extends Tester {
                             examine.setMedicalRecordId(info.getId());
 
                             String[] split1 = s.split(";内容：");
-                            String replace = split1[0];
-                            if(!"".equals(replace)){
-                                String[] split2 = replace.split(",");
-                                JSONArray array = new JSONArray();
-                                for (String s1 : split2) {
-                                    JSONObject json = new JSONObject();
-                                    boolean matches = s1.substring(0, 1).matches("^[0-9]*$");
-                                    if(matches){
-                                        if(Integer.valueOf(s1.substring(0,1))<=2){
-                                            json.put("position",Integer.valueOf(s1.substring(0,1))-1);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==3){
-                                            json.put("position",3);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==4){
-                                            json.put("position",2);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==5){
-                                            json.put("position",0);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==6){
-                                            json.put("position",1);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==7){
-                                            json.put("position",3);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==8){
-                                            json.put("position",2);
-                                            setSerialNumber(json, s1);
+                            if(split1.length > 0){
+                                String replace = split1[0];
+                                if(!"".equals(replace)){
+                                    String[] split2 = replace.split(",");
+                                    JSONArray array = new JSONArray();
+                                    for (String s1 : split2) {
+                                        JSONObject json = new JSONObject();
+                                        boolean matches = s1.substring(0, 1).matches("^[0-9]*$");
+                                        if(matches){
+                                            if(Integer.valueOf(s1.substring(0,1))<=2){
+                                                json.put("position",Integer.valueOf(s1.substring(0,1))-1);
+                                                json.put("serialNumber",s1.substring(1));
+                                            }else if(Integer.valueOf(s1.substring(0,1))==3){
+                                                json.put("position",3);
+                                                json.put("serialNumber",s1.substring(1));
+                                            }else if(Integer.valueOf(s1.substring(0,1))==4){
+                                                json.put("position",2);
+                                                json.put("serialNumber",s1.substring(1));
+                                            }else if(Integer.valueOf(s1.substring(0,1))==5){
+                                                json.put("position",0);
+                                                setSerialNumber(json, s1);
+                                            }else if(Integer.valueOf(s1.substring(0,1))==6){
+                                                json.put("position",1);
+                                                setSerialNumber(json, s1);
+                                            }else if(Integer.valueOf(s1.substring(0,1))==7){
+                                                json.put("position",3);
+                                                setSerialNumber(json, s1);
+                                            }else if(Integer.valueOf(s1.substring(0,1))==8){
+                                                json.put("position",2);
+                                                setSerialNumber(json, s1);
+                                            }
+                                            array.add(json);
                                         }
-                                        array.add(json);
-                                    }
 
+                                    }
+                                    examine.setToothPositions(array.toJSONString());
                                 }
-                                examine.setToothPositions(array.toJSONString());
                             }
+
                             if(split1.length>1) examine.setResult(split1[1].length()>500?split1[1].substring(0, 500):split1[1]);
                             supportExamineList.add(examine);
                         }
@@ -309,42 +314,45 @@ public class MedicalRecordsExcelImport extends Tester {
                             examine.setMedicalRecordId(info.getId());
 
                             String[] split1 = s.split(";内容：");
-                            String replace = split1[0];
-                            if(!"".equals(replace)){
-                                String[] split2 = replace.split(",");
-                                JSONArray array = new JSONArray();
-                                for (String s1 : split2) {
-                                    JSONObject json = new JSONObject();
-                                    boolean matches = s1.substring(0, 1).matches("^[0-9]*$");
-                                    if(matches){
-                                        if(Integer.valueOf(s1.substring(0,1))<=2){
-                                            json.put("position",Integer.valueOf(s1.substring(0,1))-1);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==3){
-                                            json.put("position",3);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==4){
-                                            json.put("position",2);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==5){
-                                            json.put("position",0);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==6){
-                                            json.put("position",1);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==7){
-                                            json.put("position",3);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==8){
-                                            json.put("position",2);
-                                            setSerialNumber(json, s1);
+                            if(split1.length > 0){
+                                String replace = split1[0];
+                                if(!"".equals(replace)){
+                                    String[] split2 = replace.split(",");
+                                    JSONArray array = new JSONArray();
+                                    for (String s1 : split2) {
+                                        JSONObject json = new JSONObject();
+                                        boolean matches = s1.substring(0, 1).matches("^[0-9]*$");
+                                        if(matches){
+                                            if(Integer.valueOf(s1.substring(0,1))<=2){
+                                                json.put("position",Integer.valueOf(s1.substring(0,1))-1);
+                                                json.put("serialNumber",s1.substring(1));
+                                            }else if(Integer.valueOf(s1.substring(0,1))==3){
+                                                json.put("position",3);
+                                                json.put("serialNumber",s1.substring(1));
+                                            }else if(Integer.valueOf(s1.substring(0,1))==4){
+                                                json.put("position",2);
+                                                json.put("serialNumber",s1.substring(1));
+                                            }else if(Integer.valueOf(s1.substring(0,1))==5){
+                                                json.put("position",0);
+                                                setSerialNumber(json, s1);
+                                            }else if(Integer.valueOf(s1.substring(0,1))==6){
+                                                json.put("position",1);
+                                                setSerialNumber(json, s1);
+                                            }else if(Integer.valueOf(s1.substring(0,1))==7){
+                                                json.put("position",3);
+                                                setSerialNumber(json, s1);
+                                            }else if(Integer.valueOf(s1.substring(0,1))==8){
+                                                json.put("position",2);
+                                                setSerialNumber(json, s1);
+                                            }
+                                            array.add(json);
                                         }
-                                        array.add(json);
-                                    }
 
+                                    }
+                                    examine.setToothPositions(array.toJSONString());
                                 }
-                                examine.setToothPositions(array.toJSONString());
                             }
+
                             if(split1.length>1) examine.setResult(split1[1].length()>500?split1[1].substring(0, 500):split1[1]);
                             medicalRecordDiagnosisList.add(examine);
                         }
@@ -365,42 +373,45 @@ public class MedicalRecordsExcelImport extends Tester {
                             examine.setMedicalRecordId(info.getId());
 
                             String[] split1 = s.split(";内容：");
-                            String replace = split1[0];
-                            if(!"".equals(replace)){
-                                String[] split2 = replace.split(",");
-                                JSONArray array = new JSONArray();
-                                for (String s1 : split2) {
-                                    JSONObject json = new JSONObject();
-                                    boolean matches = s1.substring(0, 1).matches("^[0-9]*$");
-                                    if(matches){
-                                        if(Integer.valueOf(s1.substring(0,1))<=2){
-                                            json.put("position",Integer.valueOf(s1.substring(0,1))-1);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==3){
-                                            json.put("position",3);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==4){
-                                            json.put("position",2);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==5){
-                                            json.put("position",0);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==6){
-                                            json.put("position",1);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==7){
-                                            json.put("position",3);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==8){
-                                            json.put("position",2);
-                                            setSerialNumber(json, s1);
+                            if(split1.length > 0){
+                                String replace = split1[0];
+                                if(!"".equals(replace)){
+                                    String[] split2 = replace.split(",");
+                                    JSONArray array = new JSONArray();
+                                    for (String s1 : split2) {
+                                        JSONObject json = new JSONObject();
+                                        boolean matches = s1.substring(0, 1).matches("^[0-9]*$");
+                                        if(matches){
+                                            if(Integer.valueOf(s1.substring(0,1))<=2){
+                                                json.put("position",Integer.valueOf(s1.substring(0,1))-1);
+                                                json.put("serialNumber",s1.substring(1));
+                                            }else if(Integer.valueOf(s1.substring(0,1))==3){
+                                                json.put("position",3);
+                                                json.put("serialNumber",s1.substring(1));
+                                            }else if(Integer.valueOf(s1.substring(0,1))==4){
+                                                json.put("position",2);
+                                                json.put("serialNumber",s1.substring(1));
+                                            }else if(Integer.valueOf(s1.substring(0,1))==5){
+                                                json.put("position",0);
+                                                setSerialNumber(json, s1);
+                                            }else if(Integer.valueOf(s1.substring(0,1))==6){
+                                                json.put("position",1);
+                                                setSerialNumber(json, s1);
+                                            }else if(Integer.valueOf(s1.substring(0,1))==7){
+                                                json.put("position",3);
+                                                setSerialNumber(json, s1);
+                                            }else if(Integer.valueOf(s1.substring(0,1))==8){
+                                                json.put("position",2);
+                                                setSerialNumber(json, s1);
+                                            }
+                                            array.add(json);
                                         }
-                                        array.add(json);
-                                    }
 
+                                    }
+                                    examine.setToothPositions(array.toJSONString());
                                 }
-                                examine.setToothPositions(array.toJSONString());
                             }
+
                             if(split1.length>1) examine.setResult(split1[1].length()>500?split1[1].substring(0, 500):split1[1]);
                             treatmentPlanList.add(examine);
                         }
@@ -422,42 +433,45 @@ public class MedicalRecordsExcelImport extends Tester {
                             examine.setMedicalRecordId(info.getId());
 
                             String[] split1 = s.split(";内容：");
-                            String replace = split1[0];
-                            if(!"".equals(replace)){
-                                String[] split2 = replace.split(",");
-                                JSONArray array = new JSONArray();
-                                for (String s1 : split2) {
-                                    JSONObject json = new JSONObject();
-                                    boolean matches = s1.substring(0, 1).matches("^[0-9]*$");
-                                    if(matches){
-                                        if(Integer.valueOf(s1.substring(0,1))<=2){
-                                            json.put("position",Integer.valueOf(s1.substring(0,1))-1);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==3){
-                                            json.put("position",3);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==4){
-                                            json.put("position",2);
-                                            json.put("serialNumber",s1.substring(1));
-                                        }else if(Integer.valueOf(s1.substring(0,1))==5){
-                                            json.put("position",0);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==6){
-                                            json.put("position",1);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==7){
-                                            json.put("position",3);
-                                            setSerialNumber(json, s1);
-                                        }else if(Integer.valueOf(s1.substring(0,1))==8){
-                                            json.put("position",2);
-                                            setSerialNumber(json, s1);
+                            if(split1.length > 0){
+                                String replace = split1[0];
+                                if(!"".equals(replace)){
+                                    String[] split2 = replace.split(",");
+                                    JSONArray array = new JSONArray();
+                                    for (String s1 : split2) {
+                                        JSONObject json = new JSONObject();
+                                        boolean matches = s1.substring(0, 1).matches("^[0-9]*$");
+                                        if(matches){
+                                            if(Integer.valueOf(s1.substring(0,1))<=2){
+                                                json.put("position",Integer.valueOf(s1.substring(0,1))-1);
+                                                json.put("serialNumber",s1.substring(1));
+                                            }else if(Integer.valueOf(s1.substring(0,1))==3){
+                                                json.put("position",3);
+                                                json.put("serialNumber",s1.substring(1));
+                                            }else if(Integer.valueOf(s1.substring(0,1))==4){
+                                                json.put("position",2);
+                                                json.put("serialNumber",s1.substring(1));
+                                            }else if(Integer.valueOf(s1.substring(0,1))==5){
+                                                json.put("position",0);
+                                                setSerialNumber(json, s1);
+                                            }else if(Integer.valueOf(s1.substring(0,1))==6){
+                                                json.put("position",1);
+                                                setSerialNumber(json, s1);
+                                            }else if(Integer.valueOf(s1.substring(0,1))==7){
+                                                json.put("position",3);
+                                                setSerialNumber(json, s1);
+                                            }else if(Integer.valueOf(s1.substring(0,1))==8){
+                                                json.put("position",2);
+                                                setSerialNumber(json, s1);
+                                            }
+                                            array.add(json);
                                         }
-                                        array.add(json);
-                                    }
 
+                                    }
+                                    examine.setToothPositions(array.toJSONString());
                                 }
-                                examine.setToothPositions(array.toJSONString());
                             }
+
                             if(split1.length>1) examine.setResult(split1[1].length()>500?split1[1].substring(0, 500):split1[1]);
                             handleList.add(examine);
                         }
@@ -485,6 +499,7 @@ public class MedicalRecordsExcelImport extends Tester {
             List<Patient> patients = patientService.findByCondition(condition);
             System.out.println("读取患者");
             Map<String, String> patientMap = patients.stream().collect(Collectors.toMap(Patient::getCardNumber, Patient::getId,(v1,v2)->v1));
+            Map<String, String> patientMap2 = patients.stream().collect(Collectors.toMap(Patient::getId, Patient::getCardNumber,(v1,v2)->v1));
             list.forEach(d ->{
                 String patientId = patientMap.get(d.getNo());
                 if(patientId != null){
@@ -504,6 +519,17 @@ public class MedicalRecordsExcelImport extends Tester {
                 criteria4.andIn("anamnesisNo", cardNumList);
                 regs.addAll(registrationService.findByCondition(condition4));
             });
+
+            for (Registration reg : regs) {
+                reg.setAnamnesisNo(patientMap2.get(reg.getPatientId()));
+            }
+            Iterator<Registration> iterator1 = regs.iterator();
+            while (iterator1.hasNext()){
+                Registration next = iterator1.next();
+                if(next.getAnamnesisNo() == null){
+                    iterator1.remove();
+                }
+            }
 
             System.out.println("读取预约");
 
@@ -534,13 +560,7 @@ public class MedicalRecordsExcelImport extends Tester {
                     errorlist.add(error);
                 }
             });
-            Iterator<MedicalRecord> iterator = list.iterator();
-            while(iterator.hasNext()){
-                MedicalRecord next = iterator.next();
-                if(next.getAppointmentId()==null){
-                    iterator.remove();
-                }
-            }
+
 
             List<List<MedicalRecord>> medicalRecordList = Lists.partition(list, 5000);
             medicalRecordList.forEach(d -> {
@@ -572,7 +592,7 @@ public class MedicalRecordsExcelImport extends Tester {
                 monthExamineService.saveUid(d);
             });
 
-            List<List<MedicalRecordError>> errorlists = Lists.partition(errorlist, 5000);
+          /*  List<List<MedicalRecordError>> errorlists = Lists.partition(errorlist, 5000);
             errorlists.forEach(d -> {
                 medicalRecordErrorService.saveUid(d);
             });
@@ -580,7 +600,7 @@ public class MedicalRecordsExcelImport extends Tester {
             List<List<MedicalRecordYw>> ywLists = Lists.partition(ywList, 5000);
             ywLists.forEach(d -> {
                 medicalRecordYwService.saveUid(d);
-            });
+            });*/
 
 
         } catch (FileNotFoundException e) {

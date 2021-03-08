@@ -117,6 +117,37 @@ public class MySpecialProvider extends MapperTemplate {
         sql.append("#{i.userId}");
         sql.append("</foreach>");
         sql.append("</trim>");
+        return sql.toString();
+    }
+    public String batchBlUpdate(MappedStatement ms) {
+        final Class<?> entityClass = getEntityClass(ms);
+        //开始拼sql
+        StringBuilder sql = new StringBuilder();
+        sql.append(SqlHelper.updateTable(entityClass, tableName(entityClass)));
+        sql.append("<trim prefix=\"set\" suffixOverrides=\",\">");
+
+        //获取全部列
+        Set<EntityColumn> columnList = EntityHelper.getColumns(entityClass);
+        for (EntityColumn column : columnList) {
+            if (!column.isId() && column.isUpdatable()) {
+                sql.append("  <trim prefix=\""+"appointment_id"+" =case\" suffix=\"end,\">");
+                sql.append("    <foreach collection=\"list\" item=\"i\" index=\"index\">");
+                sql.append("      <if test=\"i."+"appointmentId"+"!=null\">");
+                sql.append("         when id=#{i.id} then #{i."+"appointmentId"+"}");
+                sql.append("      </if>");
+                sql.append("    </foreach>");
+                sql.append("  </trim>");
+            }
+        }
+
+        sql.append("</trim>");
+        sql.append("WHERE");
+        sql.append(" id IN ");
+        sql.append("<trim prefix=\"(\" suffix=\")\">");
+        sql.append("<foreach collection=\"list\" separator=\", \" item=\"i\" index=\"index\" >");
+        sql.append("#{i.id}");
+        sql.append("</foreach>");
+        sql.append("</trim>");
         System.err.println(sql.toString());
         return sql.toString();
     }

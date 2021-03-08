@@ -19,18 +19,10 @@ public class TestDemo {
 
 
     public static void main(String[] args) {
-        List<String> list = new ArrayList<>();
-        list.add("A");
-        list.add("B");
-        list.add("C");
-        Iterator<String> iterator = list.iterator();
-        if(iterator.hasNext()){
-            String next = iterator.next();
-            if(next=="A"){
-                iterator.remove();
-            }
-        }
-        System.out.println(list);
+        String a = ";内容：";
+        String[] split1 = a.split(";内容：");
+        String replace = split1[0];
+        System.out.println(replace);
     }
 
     private static void setSerialNumber(JSONObject json, String s1 ){

@@ -37,7 +37,7 @@ public class CodeGenerator {
     private static final String DATE = new SimpleDateFormat("yyyy/MM/dd").format(new Date());//@date
 
     public static void main(String[] args) {
-        genCode("medical_record_yw");
+        genCode("medical_record_backup");
         //genCodeByCustomModelName("medical_record_error","SmsTemplate");
     }
 

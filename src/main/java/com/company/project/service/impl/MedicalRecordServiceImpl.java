@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -19,4 +20,8 @@ public class MedicalRecordServiceImpl extends AbstractService<MedicalRecord> imp
     @Resource
     private MedicalRecordMapper medicalRecordTestMapper;
 
+    @Override
+    public void batchBlUpdate(List<MedicalRecord> medicalRecordList) {
+        medicalRecordTestMapper.batchBlUpdate(medicalRecordList);
+    }
 }
