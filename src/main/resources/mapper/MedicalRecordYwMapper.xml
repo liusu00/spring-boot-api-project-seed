@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.MedicalRecordYwMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.MedicalRecordYw">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="kqjc" jdbcType="VARCHAR" property="kqjc" />
+    <result column="fzjc" jdbcType="VARCHAR" property="fzjc" />
+    <result column="zd" jdbcType="VARCHAR" property="zd" />
+    <result column="zljh" jdbcType="VARCHAR" property="zljh" />
+    <result column="cz" jdbcType="VARCHAR" property="cz" />
+  </resultMap>
+</mapper>

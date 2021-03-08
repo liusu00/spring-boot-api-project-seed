@@ -27,6 +27,10 @@ import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+/**
+ * 病历导入：e看牙提供数据
+ * 表名称： medical_record
+ */
 public class MedicalRecordsExcelImport extends Tester {
 
     @Autowired

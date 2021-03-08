@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.company.project.dao.MedicalRecordBackupMapper">
+  <resultMap id="BaseResultMap" type="com.company.project.model.MedicalRecordBackup">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="blh" jdbcType="VARCHAR" property="blh" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="age" jdbcType="VARCHAR" property="age" />
+    <result column="jzsj" jdbcType="TIMESTAMP" property="jzsj" />
+    <result column="clinic" jdbcType="VARCHAR" property="clinic" />
+    <result column="ys" jdbcType="VARCHAR" property="ys" />
+    <result column="zs" jdbcType="VARCHAR" property="zs" />
+    <result column="cjsj" jdbcType="TIMESTAMP" property="cjsj" />
+    <result column="xgsj" jdbcType="TIMESTAMP" property="xgsj" />
+    <result column="bllx" jdbcType="VARCHAR" property="bllx" />
+    <result column="import_time" jdbcType="TIMESTAMP" property="importTime" />
+    <result column="import_code" jdbcType="INTEGER" property="importCode" />
+  </resultMap>
+</mapper>
